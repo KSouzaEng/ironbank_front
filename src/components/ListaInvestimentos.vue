@@ -1,35 +1,56 @@
 <template>
   <div>
      <div class="container">
-        <h3 class="p-3 text-center">Investimentos feitos por você</h3>
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>Valor do Deposito</th>
-                    <th>Data do deposito</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="investimento in investimentos.investimentos" :key="investimento.id">
-                    <td>{{investimento.valor_investimento}}</td>
-                    <td> {{investimento.data_investimento}}</td>
-                </tr>
-            </tbody>
-        </table>
+         <div class="card shadow-sm col-md-12 mt-5">
+         <h5 class="card-header p-2 ">Investimentos</h5>
+         <div class="card-body">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accoridon-item" v-for="(item,index) in investimentos.investimentos" :key="index">
+                <h2 class="accordion-header" :id="'flush-heading'+index">
+                    <button
+                    class="accordion-button collapsed"
+                        @click="verificar(item.id)"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        :data-bs-target="'#flush-collapse'+index"
+                        aria-expanded="false"
+                        :aria-controls="'flush-collapse-'+index">
+                            <h5 class="float-start fs-5">Data do investimento:  {{item.data_investimento}}</h5>
+                    </button>
+                </h2>
+           
+                <div
+                    :id="'flush-collapse'+index"
+                    class="accordion-collapse collapse"
+                    :aria-labelledby="'flush-heading'+index"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body d-flex justify-content-between"> 
+                        
+                        <h5 class="float-start ">Valor do investimento:  R$ {{item.valor_investimento}}</h5>
+                        <h5 class="float-start ">Ganhos :  R$ {{investimento}}</h5>
+                    </div>
+                </div>
+                <hr>
+                </div>
+            </div>
+         </div>
     </div>    
+     </div>
+        
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
-// import cookie  from 'js-cookie'
+import axios from 'axios'
+import Cookie  from 'js-cookie'
 import { mapActions,mapState } from "vuex";
 
 export default {
 
     computed:{
     ...mapState("investimento", {
-      investimentos: "investimentos",
+       investimentos: "investimentos",
+        investimento: "investimento",
     }),
 
     table(){
@@ -39,16 +60,38 @@ export default {
     },
     data(){
         return{
-            tableData:{}
+            tableData:{},
+            user_id:0,
+            nome_investidor:'',
+            data_investimento:'',
+            valor_investimento:0
         }
     },
     methods: {
  ...mapActions({
       loadInvestiments: "investimento/loadInvestiments",
+      Calcula : "investimento/Calcula"
     }),
+    verificar(id){
+
+       this.Calcula(id)
+    },
+     async userLoged(){
+        const token = Cookie.get('_my_token');
+              await   axios({
+                    url: '/me',
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json',Authorization: 'Bearer ' + token},
+                }).then(response => {
+                 
+                 this.user_id = response.data.user.id
+                  this.loadInvestiments(this.user_id)
+                })
+      }
     },
     created(){
-        this.loadInvestiments()
+        this.userLoged()
+     
         // console.log(this.investimentos)
         
     }
@@ -60,7 +103,7 @@ export default {
         /* display: flex;
         justify-content:center;
         align-items:center; */
-        padding-bottom: 130px;
+        padding-bottom: 286px;
         width:100%;
         height: 20vh;
     }

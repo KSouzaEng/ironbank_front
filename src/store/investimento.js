@@ -55,12 +55,41 @@ export default {
             }
           },
 
-          async loadInvestiments({commit}) {
+          async loadInvestiments({commit},id) {
 
-            let response = await axios.get('investimentos')
+            let response = await axios.get(`investimentos/${id}`)
            console.log('investimentos', response.data.investimentos)
             commit('SET_INVESTIMENTOS', response.data)
             
           },
-    }
+          async Calcula({commit}, id) {
+
+            try {
+              console.log('Calcula')
+              let response = await axios.get(`calcula/${id}`)
+              console.log('investimento', response.data.investimento)
+              commit('SET_INVESTIMENTO', response.data.investimento)
+            } catch (error) {
+              console.log('error', error)
+              commit('SET_IS_SAVED', false)
+            }
+    
+          },
+          async Retirada({commit},information) {
+
+            try {
+              // console.log('Retiradaa---------------',information)
+              let response = await axios.post('/retirada',{
+                valor_retirada: information.valor_retirada,
+                id: information.id,
+              })
+              console.log('Retiradaa', response.data.investimento)
+              commit('SET_INVESTIMENTO', response.data.investimento)
+            } catch (error) {
+              console.log('error', error)
+              commit('SET_IS_SAVED', false)
+            }
+    
+          }
+        }
 }
