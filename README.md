@@ -1,4 +1,4 @@
-# ironbank_front
+# Investimants App
 
 ## Project setup
 ```
@@ -16,5 +16,3 @@ npm run serve
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
