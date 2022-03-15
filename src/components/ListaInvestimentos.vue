@@ -1,6 +1,6 @@
 <template>
   <div>
-     <div class="container">
+     <div class="d-inline-flex" style="width:78%">
          <div class="card shadow-sm col-md-12 mt-5">
          <h5 class="card-header p-2 ">Investimentos</h5>
          <div class="card-body">
@@ -26,8 +26,18 @@
                     data-bs-parent="#accordionFlushExample">
                     <div class="accordion-body d-flex justify-content-between"> 
                         
-                        <h5 class="float-start ">Valor do investimento:  R$ {{item.valor_investimento}}</h5>
-                        <h5 class="float-start ">Ganhos :  R$ {{investimento}}</h5>
+                       <div class="row">
+                           <div class="col-md-4">
+                                <h5 class="float-start ">Valor do investimento:  R$ {{item.valor_investimento}}</h5>
+                           </div>
+                           <div class="col-md-4">
+                                <h5 class="float-start ">Ganhos :  R$ {{investimento}}</h5>
+                        
+                           </div>
+                           <div class="col-md-4">
+                               <h5 class="float-start ">Valor apos retirada :  R$ {{item.valor_investimento_ganho_retirada}}</h5>
+                           </div>
+                       </div>
                     </div>
                 </div>
                 <hr>
@@ -103,7 +113,7 @@ export default {
         /* display: flex;
         justify-content:center;
         align-items:center; */
-        padding-bottom: 286px;
+        padding-bottom: 586px;
         width:100%;
         height: 20vh;
     }

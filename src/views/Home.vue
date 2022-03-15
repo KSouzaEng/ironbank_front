@@ -2,12 +2,12 @@
   <div class="" >
    <NavBar ></NavBar>
     
-    <div class="mb-5 container">
+
        <lista-investimentos></lista-investimentos>
-    </div>
-    <div class="mb-4 my-5 container">
-      <formulario></formulario>
-    </div>
+   
+ 
+         <formulario ></formulario>
+   
   </div>
 </template>
 
@@ -24,6 +24,11 @@ export default {
     ListaInvestimentos,
     Formulario
   },
+  methods:{
+    reRender(){
+        this.$forceUpdate()
+    }
+  }
   
 }
 </script>

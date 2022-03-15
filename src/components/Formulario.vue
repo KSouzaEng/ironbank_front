@@ -1,7 +1,7 @@
 <template>
   <div >
  
-  <div class="container ">
+  <div class="d-inline-flex" style="width:82%">
     <div class="row  justify-content-center ">
       <div class="card shadow col-sm-6 mx-2 mt-5 rounded-sm mb-5">
         <h5 class="card-title mt-4">
@@ -41,7 +41,7 @@
              <label for="valor_retirada"  class="float-start mb-2"><strong>Valor da retirada</strong></label>
              <input type="number" name="valor_retirada" id="valor_retirada"  class="form-control input" v-model="valor_retirada">
               <h5 v-if="invest == 0" class="text-danger mt-2">Sem saldo para retiradas</h5>
-              {{ valor_retirada }}
+   
           </div>
             <div class="d-flex flex-row-reverse my-3 " >
               <button  type="submit" class="btn btn-dark btn-lg" @click="verificaInvestimento()">Retirar</button>
@@ -111,19 +111,25 @@ export default {
                  this.user_id = response.data.user.id
                  this.nome_investidor = response.data.user.name
                  console.log(this.user_id,this.nome_investidor,this.data_investimento,this.valor_investimento)
+                 if(this.data_investimento != '' && this.valor_investimento){
                  this.createInvestment({
                    'user_id' : this.user_id,
                    'nome_investidor': this.nome_investidor,
                    'data_investimento': this.data_investimento,
                     'valor_investimento': this.valor_investimento,
                  })
-                this.loadInvestiments(this.user_id)
+                  this.loadInvestiments(this.user_id)
                 swal.fire({
                    icon: 'success',
                    title:'Investimento realizado',
-                }).then( () => {
-                    console.log('erro')
                   })
+                 }else{
+                swal.fire({
+                   icon: 'error',
+                   title:'Preencha o(os) campo(os) em branco',
+                })
+                 }
+               
                             
                 })
                 // console.log(this.form.data_investimento,this.form.valor_investimento)
@@ -144,6 +150,7 @@ export default {
                 // var mes = String(data.getMonth() + 1).padStart(2, '0');
                 // var ano = data.getFullYear();
                 // var dataAtual = dia + '/' + mes + '/' + ano;
+                if(this.valor_retirada != ''){
                 console.log(response);
                     let id = response.data.user.id
                     // this.loadInvestiments(id)
@@ -157,12 +164,21 @@ export default {
                                 'valor_retirada': this.valor_retirada,
                                 'id': id
                             }) 
+                            swal.fire({
+                              icon: 'success',
+                              title:'Operação Concluída',
+                            }).
                              this.retirada = true
                         }else{
                             this.retirada = false
                         }
                     }
-                 
+                  }else{
+                  swal.fire({
+                   icon: 'error',
+                   title:'Preencha o(os) campo(os) em branco',
+                })
+                  }
                 })
                 // console.log(this.form.data_investimento,this.form.valor_investimento)
      },
